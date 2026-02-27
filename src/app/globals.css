@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+:root {
+  --fb-blue: #3b5998;
+  --fb-blue-light: #4267b2;
+  --fb-blue-dark: #2d4373;
+  --fb-blue-hover: #365899;
+  --fb-gray-bg: #e8e8e8;
+  --fb-gray-light: #f5f5f5;
+  --fb-white: #ffffff;
+  --fb-text: #333333;
+  --fb-text-secondary: #555555;
+  --fb-text-muted: #999999;
+  --fb-border: #e5e5e5;
+  --fb-border-dark: #cccccc;
+  --fb-green-online: #5cb85c;
+  --fb-red: #cc0000;
+  --fb-link: #3b5998;
+  --fb-reaction-bg: #f5f5f5;
+}
+
+@theme inline {
+  --color-fb-blue: var(--fb-blue);
+  --color-fb-blue-light: var(--fb-blue-light);
+  --color-fb-blue-dark: var(--fb-blue-dark);
+  --color-fb-blue-hover: var(--fb-blue-hover);
+  --color-fb-gray-bg: var(--fb-gray-bg);
+  --color-fb-gray-light: var(--fb-gray-light);
+  --color-fb-white: var(--fb-white);
+  --color-fb-text: var(--fb-text);
+  --color-fb-text-secondary: var(--fb-text-secondary);
+  --color-fb-text-muted: var(--fb-text-muted);
+  --color-fb-border: var(--fb-border);
+  --color-fb-border-dark: var(--fb-border-dark);
+  --color-fb-green: var(--fb-green-online);
+  --color-fb-red: var(--fb-red);
+  --color-fb-link: var(--fb-link);
+  --color-fb-reaction-bg: var(--fb-reaction-bg);
+}
+
+body {
+  background-color: var(--fb-gray-bg);
+  color: var(--fb-text);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--fb-border-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fb-text-muted);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--fb-blue);
+  outline-offset: 2px;
+}
