@@ -13,6 +13,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt">
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="antialiased" suppressHydrationWarning>{children}</body>
     </html>
   );

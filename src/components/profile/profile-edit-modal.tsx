@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { Modal } from "@/components/ui/modal";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Profile } from "@/types";
 import { COURSE_TYPES } from "@/lib/constants";
 import { updateProfile } from "@/actions/profile";
@@ -14,15 +12,41 @@ interface ProfileEditModalProps {
   onClose: () => void;
 }
 
+const fieldStyle: React.CSSProperties = {
+  width: "100%",
+  height: "20px",
+  fontSize: "11px",
+  fontFamily: "Arial, sans-serif",
+  border: "1px solid #ccc",
+  padding: "0 4px",
+  color: "#333",
+  outline: "none",
+  boxSizing: "border-box",
+};
+
+const labelStyle: React.CSSProperties = {
+  fontSize: "11px",
+  fontFamily: "Arial, sans-serif",
+  fontWeight: "bold",
+  color: "#555",
+  whiteSpace: "nowrap",
+  paddingRight: "8px",
+  verticalAlign: "top",
+  paddingTop: "3px",
+  paddingBottom: "6px",
+};
+
 export function ProfileEditModal({ profile, onClose }: ProfileEditModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setIsLoading(true);
     setError(null);
 
+    const formData = new FormData(e.currentTarget);
     const result = await updateProfile(formData);
     if (result?.error) {
       setError(result.error);
@@ -36,96 +60,137 @@ export function ProfileEditModal({ profile, onClose }: ProfileEditModalProps) {
 
   return (
     <Modal isOpen onClose={onClose} title="Editar Perfil">
-      <form action={handleSubmit} className="space-y-3">
+      <form onSubmit={handleSubmit}>
         {error && (
-          <div className="rounded-md bg-red-50 border border-fb-red/20 p-3 text-sm text-fb-red">
+          <div
+            style={{
+              fontSize: "11px",
+              fontFamily: "Arial, sans-serif",
+              color: "#cc0000",
+              backgroundColor: "#fff0f0",
+              border: "1px solid #ffcccc",
+              padding: "4px 6px",
+              marginBottom: "8px",
+            }}
+          >
             {error}
           </div>
         )}
 
-        <Input
-          id="fullName"
-          name="fullName"
-          label="Nome completo"
-          defaultValue={profile.full_name}
-          required
-        />
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <tbody>
+            <tr>
+              <td style={labelStyle}>Nome completo:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <input name="fullName" defaultValue={profile.full_name} required style={fieldStyle} />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Username:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <input name="username" defaultValue={profile.username} required style={fieldStyle} />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Bio:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <textarea
+                  name="bio"
+                  defaultValue={profile.bio || ""}
+                  rows={3}
+                  maxLength={500}
+                  placeholder="Conta um pouco sobre ti..."
+                  style={{
+                    width: "100%",
+                    fontSize: "11px",
+                    fontFamily: "Arial, sans-serif",
+                    border: "1px solid #ccc",
+                    padding: "3px 4px",
+                    color: "#333",
+                    outline: "none",
+                    resize: "vertical",
+                    boxSizing: "border-box",
+                  }}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Curso:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <input name="course" defaultValue={profile.course || ""} style={fieldStyle} />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Tipo de curso:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <select
+                  name="courseType"
+                  defaultValue={profile.course_type || ""}
+                  style={{ ...fieldStyle, height: "22px" }}
+                >
+                  <option value="">Selecionar</option>
+                  {COURSE_TYPES.map((type) => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Faculdade:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <input name="department" defaultValue={profile.department || ""} style={fieldStyle} />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Ano de ingresso:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <input
+                  name="enrollmentYear"
+                  type="number"
+                  min={2000}
+                  max={2030}
+                  defaultValue={profile.enrollment_year?.toString() || ""}
+                  style={{ ...fieldStyle, width: "80px" }}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-        <Input
-          id="username"
-          name="username"
-          label="Username"
-          defaultValue={profile.username}
-          required
-        />
+        <div style={{ borderTop: "1px solid #e5e5e5", margin: "8px 0" }} />
 
-        <div className="w-full">
-          <label className="mb-1 block text-xs font-semibold text-fb-text-secondary">
-            Bio
-          </label>
-          <textarea
-            name="bio"
-            defaultValue={profile.bio || ""}
-            rows={3}
-            maxLength={500}
-            className="w-full rounded-md border border-fb-border bg-fb-white px-3 py-2 text-sm text-fb-text placeholder:text-fb-text-muted focus:border-fb-blue focus:outline-none"
-            placeholder="Conta um pouco sobre ti..."
-          />
-        </div>
-
-        <Input
-          id="course"
-          name="course"
-          label="Curso"
-          defaultValue={profile.course || ""}
-        />
-
-        <div className="w-full">
-          <label className="mb-1 block text-xs font-semibold text-fb-text-secondary">
-            Tipo de curso
-          </label>
-          <select
-            name="courseType"
-            defaultValue={profile.course_type || ""}
-            className="w-full rounded-md border border-fb-border bg-fb-white px-3 py-2 text-sm text-fb-text focus:border-fb-blue focus:outline-none"
-          >
-            <option value="">Selecionar</option>
-            {COURSE_TYPES.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <Input
-          id="department"
-          name="department"
-          label="Departamento / Faculdade"
-          defaultValue={profile.department || ""}
-        />
-
-        <Input
-          id="enrollmentYear"
-          name="enrollmentYear"
-          label="Ano de ingresso"
-          type="number"
-          min={2000}
-          max={2030}
-          defaultValue={profile.enrollment_year?.toString() || ""}
-        />
-
-        <div className="flex justify-end gap-2 pt-2">
-          <Button
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: "4px" }}>
+          <button
             type="button"
-            variant="secondary"
             onClick={onClose}
+            style={{
+              fontSize: "11px",
+              fontFamily: "Arial, sans-serif",
+              backgroundColor: "#f5f5f5",
+              color: "#333",
+              border: "1px solid #ccc",
+              padding: "2px 10px",
+              cursor: "pointer",
+            }}
           >
             Cancelar
-          </Button>
-          <Button type="submit" isLoading={isLoading}>
-            Guardar
-          </Button>
+          </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            style={{
+              fontSize: "11px",
+              fontFamily: "Arial, sans-serif",
+              fontWeight: "bold",
+              backgroundColor: isLoading ? "#8b9dc3" : "#3b5998",
+              color: "#fff",
+              border: "1px solid #2d4373",
+              padding: "2px 10px",
+              cursor: isLoading ? "default" : "pointer",
+            }}
+          >
+            {isLoading ? "A guardar..." : "Guardar alterações"}
+          </button>
         </div>
       </form>
     </Modal>

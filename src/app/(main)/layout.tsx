@@ -26,8 +26,8 @@ export default function MainLayout({
             paddingBottom: "16px",
           }}
         >
-          UALGbook © {new Date().getFullYear()} &nbsp;·&nbsp; Fundado por{" "}
-          <span style={{ fontWeight: "bold", color: "#555" }}>Diogo Porto</span>
+          theUALGbook © {new Date().getFullYear()} &nbsp;·&nbsp; Fundado por{" "}
+          <span style={{ fontWeight: "bold", color: "#555" }}>Diogo Zuckerberg e Martim Saverino</span>
           &nbsp;·&nbsp; Universidade do Algarve
         </footer>
       </main>

@@ -49,7 +49,7 @@ export function Header() {
               letterSpacing: "-0.5px",
             }}
           >
-            UALGbook
+            theUALGbook
           </Link>
           <form action="/search" style={{ display: "flex", alignItems: "center" }}>
             <input

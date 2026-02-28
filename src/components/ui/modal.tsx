@@ -1,7 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 interface ModalProps {
@@ -9,27 +7,14 @@ interface ModalProps {
   onClose: () => void;
   title?: string;
   children: React.ReactNode;
-  className?: string;
 }
 
-export function Modal({
-  isOpen,
-  onClose,
-  title,
-  children,
-  className,
-}: ModalProps) {
+export function Modal({ isOpen, onClose, title, children }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
   useEffect(() => {
@@ -47,29 +32,64 @@ export function Modal({
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={(e) => {
-        if (e.target === overlayRef.current) onClose();
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 50,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0,0,0,0.5)",
       }}
+      onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
     >
       <div
-        className={cn(
-          "relative w-full max-w-lg rounded-lg bg-fb-white shadow-xl",
-          className
-        )}
+        style={{
+          backgroundColor: "#fff",
+          border: "1px solid #ccc",
+          width: "100%",
+          maxWidth: "460px",
+          maxHeight: "90vh",
+          overflowY: "auto",
+        }}
       >
         {title && (
-          <div className="flex items-center justify-between border-b border-fb-border px-4 py-3">
-            <h2 className="text-lg font-bold text-fb-text">{title}</h2>
+          <div
+            style={{
+              backgroundColor: "#3b5998",
+              padding: "4px 8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "11px",
+                fontFamily: "Arial, sans-serif",
+                fontWeight: "bold",
+                color: "#fff",
+              }}
+            >
+              {title}
+            </span>
             <button
               onClick={onClose}
-              className="rounded-full p-1 text-fb-text-secondary hover:bg-fb-gray-light"
+              style={{
+                background: "none",
+                border: "none",
+                color: "#fff",
+                fontSize: "16px",
+                cursor: "pointer",
+                lineHeight: 1,
+                padding: "0 2px",
+              }}
             >
-              <X className="h-5 w-5" />
+              ×
             </button>
           </div>
         )}
-        <div className="p-4">{children}</div>
+        <div style={{ padding: "12px" }}>{children}</div>
       </div>
     </div>
   );

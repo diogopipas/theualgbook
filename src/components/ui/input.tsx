@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { InputHTMLAttributes, forwardRef } from "react";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -7,13 +6,20 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, id, ...props }, ref) => {
+  ({ label, error, id, style, ...props }, ref) => {
     return (
-      <div className="w-full">
+      <div style={{ width: "100%", marginBottom: "6px" }}>
         {label && (
           <label
             htmlFor={id}
-            className="mb-1 block text-xs font-semibold text-fb-text-secondary"
+            style={{
+              display: "block",
+              fontSize: "11px",
+              fontFamily: "Arial, sans-serif",
+              fontWeight: "bold",
+              color: "#555",
+              marginBottom: "2px",
+            }}
           >
             {label}
           </label>
@@ -21,15 +27,31 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref}
           id={id}
-          className={cn(
-            "w-full rounded-md border border-fb-border bg-fb-white px-3 py-2 text-sm text-fb-text placeholder:text-fb-text-muted transition-colors focus:border-fb-blue focus:outline-none",
-            error && "border-fb-red",
-            className
-          )}
+          style={{
+            width: "100%",
+            height: "22px",
+            fontSize: "11px",
+            fontFamily: "Arial, sans-serif",
+            border: error ? "1px solid #cc0000" : "1px solid #ccc",
+            padding: "0 4px",
+            color: "#333",
+            outline: "none",
+            boxSizing: "border-box",
+            ...style,
+          }}
           {...props}
         />
         {error && (
-          <p className="mt-1 text-xs text-fb-red">{error}</p>
+          <p
+            style={{
+              fontSize: "11px",
+              fontFamily: "Arial, sans-serif",
+              color: "#cc0000",
+              margin: "2px 0 0",
+            }}
+          >
+            {error}
+          </p>
         )}
       </div>
     );
