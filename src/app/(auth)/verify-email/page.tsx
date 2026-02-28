@@ -18,7 +18,7 @@ export default function VerifyEmailPage() {
       <p className="text-xs text-fb-text-muted">
         Não recebeste o email? Verifica a pasta de spam.
       </p>
-      <div className="mt-4">
+      <div className="mt-4"> 
         <Link
           href="/login"
           className="text-sm font-semibold text-fb-link hover:underline"
