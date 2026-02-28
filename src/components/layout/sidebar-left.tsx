@@ -19,6 +19,7 @@ export function SidebarLeft() {
 
   return (
     <aside
+      className="hidden lg:block"
       style={{
         position: "fixed",
         left: 0,

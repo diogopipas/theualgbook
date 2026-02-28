@@ -90,7 +90,7 @@ export function Header() {
         </div>
 
         {/* Right: text nav links */}
-        <nav style={{ display: "flex", alignItems: "center" }}>
+        <nav className="hidden lg:flex" style={{ alignItems: "center" }}>
           {profile && (
             <>
               <HeaderLink href={`/profile/${profile.username}`}>

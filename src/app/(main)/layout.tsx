@@ -12,7 +12,7 @@ export default function MainLayout({
     <div className="min-h-screen bg-fb-gray-bg">
       <Header />
       <SidebarLeft />
-      <main className="mx-auto max-w-[680px] px-4 pt-[36px] pb-4 lg:ml-[204px] xl:mr-[204px] xl:ml-[204px] xl:max-w-none">
+      <main className="mx-auto max-w-[680px] px-4 pt-[36px] pb-20 lg:pb-4 lg:ml-[204px] xl:mr-[204px] xl:ml-[204px] xl:max-w-none">
         {children}
         <footer
           style={{
