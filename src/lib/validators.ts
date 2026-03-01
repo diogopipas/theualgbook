@@ -40,7 +40,7 @@ export const profileSchema = z.object({
       /^[a-zA-Z0-9._]+$/,
       "O username só pode conter letras, números, pontos e underscores"
     ),
-  bio: z.string().max(500, "A bio deve ter no máximo 500 caracteres").optional(),
+  bio: z.string().max(500).optional(),
   course: z.string().optional(),
   courseType: z
     .enum(["Licenciatura", "Mestrado", "TeSP"])
@@ -48,6 +48,25 @@ export const profileSchema = z.object({
     .nullable(),
   department: z.string().optional(),
   enrollmentYear: z.number().int().min(2000).max(2030).optional().nullable(),
+  // Basic Info
+  birthday: z.string().optional().nullable(),
+  hometown: z.string().max(100).optional().nullable(),
+  relationshipStatus: z
+    .enum(["Solteiro/a", "Numa relação", "Comprometido/a", "Casado/a", "Complicado"])
+    .optional()
+    .nullable(),
+  // Personal Info
+  activities: z.string().max(500).optional().nullable(),
+  interests: z.string().max(500).optional().nullable(),
+  favoriteMusic: z.string().max(500).optional().nullable(),
+  favoriteBooks: z.string().max(500).optional().nullable(),
+  favoriteQuotes: z.string().max(500).optional().nullable(),
+  // Education Info
+  highSchool: z.string().max(200).optional().nullable(),
+  // Work Info
+  workCompany: z.string().max(200).optional().nullable(),
+  workPeriod: z.string().max(100).optional().nullable(),
+  workDescription: z.string().max(500).optional().nullable(),
 });
 
 export const postSchema = z.object({

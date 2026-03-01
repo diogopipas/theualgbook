@@ -10,6 +10,22 @@ export interface Profile {
   course_type: "Licenciatura" | "Mestrado" | "TeSP" | null;
   department: string | null;
   enrollment_year: number | null;
+  // Basic Info
+  birthday: string | null;
+  hometown: string | null;
+  relationship_status: "Solteiro/a" | "Numa relação" | "Comprometido/a" | "Casado/a" | "Complicado" | null;
+  // Personal Info
+  activities: string | null;
+  interests: string | null;
+  favorite_music: string | null;
+  favorite_books: string | null;
+  favorite_quotes: string | null;
+  // Education Info
+  high_school: string | null;
+  // Work Info
+  work_company: string | null;
+  work_period: string | null;
+  work_description: string | null;
   is_online: boolean;
   last_seen: string;
   created_at: string;

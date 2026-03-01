@@ -11,16 +11,30 @@ export async function updateProfile(formData: FormData) {
   } = await supabase.auth.getUser();
   if (!user) throw new Error("Não autenticado");
 
+  const str = (key: string) => (formData.get(key) as string) || null;
+
   const validated = profileSchema.parse({
     fullName: formData.get("fullName"),
     username: formData.get("username"),
-    bio: formData.get("bio") || undefined,
-    course: formData.get("course") || undefined,
-    courseType: formData.get("courseType") || null,
-    department: formData.get("department") || undefined,
+    bio: str("bio"),
+    course: str("course"),
+    courseType: str("courseType"),
+    department: str("department"),
     enrollmentYear: formData.get("enrollmentYear")
       ? Number(formData.get("enrollmentYear"))
       : null,
+    birthday: str("birthday"),
+    hometown: str("hometown"),
+    relationshipStatus: str("relationshipStatus"),
+    activities: str("activities"),
+    interests: str("interests"),
+    favoriteMusic: str("favoriteMusic"),
+    favoriteBooks: str("favoriteBooks"),
+    favoriteQuotes: str("favoriteQuotes"),
+    highSchool: str("highSchool"),
+    workCompany: str("workCompany"),
+    workPeriod: str("workPeriod"),
+    workDescription: str("workDescription"),
   });
 
   const { error } = await supabase
@@ -33,6 +47,18 @@ export async function updateProfile(formData: FormData) {
       course_type: validated.courseType,
       department: validated.department,
       enrollment_year: validated.enrollmentYear,
+      birthday: validated.birthday,
+      hometown: validated.hometown,
+      relationship_status: validated.relationshipStatus,
+      activities: validated.activities,
+      interests: validated.interests,
+      favorite_music: validated.favoriteMusic,
+      favorite_books: validated.favoriteBooks,
+      favorite_quotes: validated.favoriteQuotes,
+      high_school: validated.highSchool,
+      work_company: validated.workCompany,
+      work_period: validated.workPeriod,
+      work_description: validated.workDescription,
       updated_at: new Date().toISOString(),
     })
     .eq("id", user.id);

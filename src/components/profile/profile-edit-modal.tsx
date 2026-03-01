@@ -24,6 +24,18 @@ const fieldStyle: React.CSSProperties = {
   boxSizing: "border-box",
 };
 
+const textareaStyle: React.CSSProperties = {
+  width: "100%",
+  fontSize: "11px",
+  fontFamily: "Arial, sans-serif",
+  border: "1px solid #ccc",
+  padding: "3px 4px",
+  color: "#333",
+  outline: "none",
+  resize: "vertical",
+  boxSizing: "border-box",
+};
+
 const labelStyle: React.CSSProperties = {
   fontSize: "11px",
   fontFamily: "Arial, sans-serif",
@@ -35,6 +47,25 @@ const labelStyle: React.CSSProperties = {
   paddingTop: "3px",
   paddingBottom: "6px",
 };
+
+const sectionHeaderStyle: React.CSSProperties = {
+  fontSize: "11px",
+  fontFamily: "Arial, sans-serif",
+  fontWeight: "bold",
+  color: "#fff",
+  backgroundColor: "#3b5998",
+  padding: "2px 6px",
+  marginTop: "10px",
+  marginBottom: "4px",
+};
+
+const RELATIONSHIP_STATUSES = [
+  "Solteiro/a",
+  "Numa relação",
+  "Comprometido/a",
+  "Casado/a",
+  "Complicado",
+] as const;
 
 export function ProfileEditModal({ profile, onClose }: ProfileEditModalProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -77,6 +108,8 @@ export function ProfileEditModal({ profile, onClose }: ProfileEditModalProps) {
           </div>
         )}
 
+        {/* Informações da Conta */}
+        <div style={sectionHeaderStyle}>Informações da Conta</div>
         <table style={{ borderCollapse: "collapse", width: "100%" }}>
           <tbody>
             <tr>
@@ -91,33 +124,105 @@ export function ProfileEditModal({ profile, onClose }: ProfileEditModalProps) {
                 <input name="username" defaultValue={profile.username} required style={fieldStyle} />
               </td>
             </tr>
+          </tbody>
+        </table>
+
+        {/* Informações Básicas */}
+        <div style={sectionHeaderStyle}>Informações Básicas</div>
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <tbody>
             <tr>
-              <td style={labelStyle}>Bio:</td>
+              <td style={labelStyle}>Estado:</td>
               <td style={{ paddingBottom: "6px" }}>
-                <textarea
-                  name="bio"
-                  defaultValue={profile.bio || ""}
-                  rows={3}
-                  maxLength={500}
-                  placeholder="Conta um pouco sobre ti..."
-                  style={{
-                    width: "100%",
-                    fontSize: "11px",
-                    fontFamily: "Arial, sans-serif",
-                    border: "1px solid #ccc",
-                    padding: "3px 4px",
-                    color: "#333",
-                    outline: "none",
-                    resize: "vertical",
-                    boxSizing: "border-box",
-                  }}
+                <select
+                  name="relationshipStatus"
+                  defaultValue={profile.relationship_status ?? ""}
+                  style={{ ...fieldStyle, height: "22px" }}
+                >
+                  <option value="">Selecionar</option>
+                  {RELATIONSHIP_STATUSES.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Nascimento:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <input
+                  name="birthday"
+                  type="date"
+                  defaultValue={profile.birthday ?? ""}
+                  style={{ ...fieldStyle, height: "22px" }}
                 />
               </td>
             </tr>
             <tr>
+              <td style={labelStyle}>Cidade natal:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <input name="hometown" defaultValue={profile.hometown ?? ""} style={fieldStyle} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        {/* Informações Pessoais */}
+        <div style={sectionHeaderStyle}>Informações Pessoais</div>
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <tbody>
+            <tr>
+              <td style={labelStyle}>Atividades:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <textarea name="activities" defaultValue={profile.activities ?? ""} rows={2} style={textareaStyle} />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Interesses:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <textarea name="interests" defaultValue={profile.interests ?? ""} rows={2} style={textareaStyle} />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Música favorita:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <textarea name="favoriteMusic" defaultValue={profile.favorite_music ?? ""} rows={2} style={textareaStyle} />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Livros favoritos:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <textarea name="favoriteBooks" defaultValue={profile.favorite_books ?? ""} rows={2} style={textareaStyle} />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Citações favoritas:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <textarea name="favoriteQuotes" defaultValue={profile.favorite_quotes ?? ""} rows={2} style={textareaStyle} />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Sobre mim:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <textarea
+                  name="bio"
+                  defaultValue={profile.bio ?? ""}
+                  rows={3}
+                  maxLength={500}
+                  style={textareaStyle}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        {/* Informações Académicas */}
+        <div style={sectionHeaderStyle}>Informações Académicas</div>
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <tbody>
+            <tr>
               <td style={labelStyle}>Curso:</td>
               <td style={{ paddingBottom: "6px" }}>
-                <input name="course" defaultValue={profile.course || ""} style={fieldStyle} />
+                <input name="course" defaultValue={profile.course ?? ""} style={fieldStyle} />
               </td>
             </tr>
             <tr>
@@ -125,7 +230,7 @@ export function ProfileEditModal({ profile, onClose }: ProfileEditModalProps) {
               <td style={{ paddingBottom: "6px" }}>
                 <select
                   name="courseType"
-                  defaultValue={profile.course_type || ""}
+                  defaultValue={profile.course_type ?? ""}
                   style={{ ...fieldStyle, height: "22px" }}
                 >
                   <option value="">Selecionar</option>
@@ -138,7 +243,7 @@ export function ProfileEditModal({ profile, onClose }: ProfileEditModalProps) {
             <tr>
               <td style={labelStyle}>Faculdade:</td>
               <td style={{ paddingBottom: "6px" }}>
-                <input name="department" defaultValue={profile.department || ""} style={fieldStyle} />
+                <input name="department" defaultValue={profile.department ?? ""} style={fieldStyle} />
               </td>
             </tr>
             <tr>
@@ -149,15 +254,51 @@ export function ProfileEditModal({ profile, onClose }: ProfileEditModalProps) {
                   type="number"
                   min={2000}
                   max={2030}
-                  defaultValue={profile.enrollment_year?.toString() || ""}
+                  defaultValue={profile.enrollment_year?.toString() ?? ""}
                   style={{ ...fieldStyle, width: "80px" }}
                 />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Escola secundária:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <input name="highSchool" defaultValue={profile.high_school ?? ""} style={fieldStyle} />
               </td>
             </tr>
           </tbody>
         </table>
 
-        <div style={{ borderTop: "1px solid #e5e5e5", margin: "8px 0" }} />
+        {/* Informações Profissionais */}
+        <div style={sectionHeaderStyle}>Informações Profissionais</div>
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <tbody>
+            <tr>
+              <td style={labelStyle}>Empresa:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <input name="workCompany" defaultValue={profile.work_company ?? ""} style={fieldStyle} />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Período:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <input
+                  name="workPeriod"
+                  placeholder="ex: 2023 – Presente"
+                  defaultValue={profile.work_period ?? ""}
+                  style={fieldStyle}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Descrição:</td>
+              <td style={{ paddingBottom: "6px" }}>
+                <textarea name="workDescription" defaultValue={profile.work_description ?? ""} rows={2} style={textareaStyle} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style={{ borderTop: "1px solid #e5e5e5", margin: "10px 0 8px" }} />
 
         <div style={{ display: "flex", justifyContent: "flex-end", gap: "4px" }}>
           <button

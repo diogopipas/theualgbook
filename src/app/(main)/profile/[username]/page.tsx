@@ -58,25 +58,63 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const isOwner = user.id === profile.id;
 
   return (
-    <div className="space-y-4 py-4">
-      <ProfileHeader
-        profile={profile}
-        currentUserId={user.id}
-        friendshipStatus={friendshipStatus}
-        friendshipId={friendshipId}
-      />
+    <div style={{ paddingTop: "4px" }}>
+      {/* Title bar */}
+      <div
+        style={{
+          backgroundColor: "#3b5998",
+          padding: "4px 8px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "8px",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "13px",
+            fontFamily: "Arial, sans-serif",
+            fontWeight: "bold",
+            color: "#fff",
+          }}
+        >
+          Perfil de {profile.full_name}
+        </span>
+        <span
+          style={{
+            fontSize: "11px",
+            fontFamily: "Arial, sans-serif",
+            fontWeight: "bold",
+            color: "#d8dfea",
+          }}
+        >
+          Universidade do Algarve
+        </span>
+      </div>
 
-      <div className="grid gap-4 lg:grid-cols-[300px_1fr]">
-        <div>
-          <ProfileInfo profile={profile} />
+      {/* Two-column layout */}
+      <div style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
+        {/* Left column: photo + actions */}
+        <div style={{ width: "175px", flexShrink: 0 }}>
+          <ProfileHeader
+            profile={profile}
+            currentUserId={user.id}
+            friendshipStatus={friendshipStatus}
+            friendshipId={friendshipId}
+          />
         </div>
-        <div className="space-y-4">
+
+        {/* Right column: info + posts */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <ProfileInfo profile={profile} />
+
           {isOwner && (
             <PostComposer
               avatarUrl={profile.avatar_url}
               fullName={profile.full_name}
             />
           )}
+
           <FeedList initialPosts={posts || []} currentUserId={user.id} />
         </div>
       </div>

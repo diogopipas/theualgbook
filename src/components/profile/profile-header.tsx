@@ -20,12 +20,12 @@ export function ProfileHeader({
   profile,
   currentUserId,
   friendshipStatus,
-  friendshipId,
 }: ProfileHeaderProps) {
   const [showEditModal, setShowEditModal] = useState(false);
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const isOwner = profile.id === currentUserId;
+  const firstName = profile.full_name?.split(" ")[0] ?? "utilizador";
 
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -50,180 +50,76 @@ export function ProfileHeader({
 
   return (
     <>
+      {/* Profile photo */}
       <div
         style={{
           backgroundColor: "#fff",
           border: "1px solid #e5e5e5",
-          marginBottom: "8px",
+          padding: "4px",
+          marginBottom: "6px",
+          textAlign: "center",
         }}
       >
-        {/* Blue title bar */}
-        <div style={{ backgroundColor: "#3b5998", padding: "3px 6px" }}>
-          <span
+        {profile.avatar_url ? (
+          <img
+            src={profile.avatar_url}
+            alt={profile.full_name}
             style={{
-              fontSize: "11px",
-              fontFamily: "Arial, sans-serif",
-              fontWeight: "bold",
-              color: "#fff",
+              width: "100%",
+              maxWidth: "175px",
+              height: "auto",
+              display: "block",
+              margin: "0 auto",
             }}
-          >
-            {profile.full_name}
-          </span>
-        </div>
-
-        {/* Profile info row */}
-        <div style={{ padding: "10px", display: "flex", gap: "12px", alignItems: "flex-start" }}>
-          {/* Avatar with optional upload */}
-          <div style={{ position: "relative", flexShrink: 0 }}>
-            <Avatar src={profile.avatar_url} alt={profile.full_name} size="xl" />
-            {isOwner && (
-              <>
-                <button
-                  onClick={() => avatarInputRef.current?.click()}
-                  style={{
-                    display: "block",
-                    marginTop: "3px",
-                    fontSize: "11px",
-                    fontFamily: "Arial, sans-serif",
-                    color: "#3b5998",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    padding: 0,
-                    textDecoration: "underline",
-                  }}
-                >
-                  Mudar foto
-                </button>
-                <input
-                  ref={avatarInputRef}
-                  type="file"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={handleAvatarUpload}
-                />
-              </>
-            )}
-          </div>
-
-          {/* Info */}
-          <div style={{ flex: 1 }}>
-            <div
-              style={{
-                fontSize: "20px",
-                fontFamily: "Arial, sans-serif",
-                fontWeight: "bold",
-                color: "#333",
-                marginBottom: "4px",
-              }}
-            >
-              {profile.full_name}
-            </div>
-
-            {profile.course && (
-              <div
-                style={{
-                  fontSize: "11px",
-                  fontFamily: "Arial, sans-serif",
-                  color: "#555",
-                  marginBottom: "2px",
-                }}
-              >
-                {profile.course_type && (
-                  <span>{profile.course_type} em </span>
-                )}
-                <span>{profile.course}</span>
-              </div>
-            )}
-
-            {profile.department && (
-              <div
-                style={{
-                  fontSize: "11px",
-                  fontFamily: "Arial, sans-serif",
-                  color: "#555",
-                  marginBottom: "2px",
-                }}
-              >
-                {profile.department}
-              </div>
-            )}
-
-            {/* Action buttons */}
-            <div style={{ marginTop: "8px", display: "flex", gap: "4px" }}>
-              {isOwner ? (
-                <button
-                  onClick={() => setShowEditModal(true)}
-                  style={{
-                    fontSize: "11px",
-                    fontFamily: "Arial, sans-serif",
-                    backgroundColor: "#f5f5f5",
-                    color: "#333",
-                    border: "1px solid #ccc",
-                    padding: "2px 8px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Editar perfil
-                </button>
-              ) : (
-                <>
-                  {friendshipStatus === "accepted" ? (
-                    <span
-                      style={{
-                        fontSize: "11px",
-                        fontFamily: "Arial, sans-serif",
-                        color: "#555",
-                      }}
-                    >
-                      ✓ Amigos
-                    </span>
-                  ) : friendshipStatus === "pending" ? (
-                    <span
-                      style={{
-                        fontSize: "11px",
-                        fontFamily: "Arial, sans-serif",
-                        color: "#999",
-                      }}
-                    >
-                      Pedido pendente
-                    </span>
-                  ) : (
-                    <button
-                      onClick={handleAddFriend}
-                      style={{
-                        fontSize: "11px",
-                        fontFamily: "Arial, sans-serif",
-                        backgroundColor: "#3b5998",
-                        color: "#fff",
-                        border: "1px solid #2d4373",
-                        padding: "2px 8px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      + Adicionar como amigo
-                    </button>
-                  )}
-                  <button
-                    onClick={handleMessage}
-                    style={{
-                      fontSize: "11px",
-                      fontFamily: "Arial, sans-serif",
-                      backgroundColor: "#f5f5f5",
-                      color: "#333",
-                      border: "1px solid #ccc",
-                      padding: "2px 8px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Enviar mensagem
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+          />
+        ) : (
+          <Avatar src={null} alt={profile.full_name} size="xl" />
+        )}
       </div>
+
+      {/* Action links */}
+      <div
+        style={{
+          backgroundColor: "#fff",
+          border: "1px solid #e5e5e5",
+          padding: "4px 0",
+          marginBottom: "6px",
+        }}
+      >
+        {isOwner ? (
+          <>
+            <ActionLink onClick={() => avatarInputRef.current?.click()}>
+              Mudar foto de perfil
+            </ActionLink>
+            <ActionLink onClick={() => setShowEditModal(true)}>
+              Editar perfil
+            </ActionLink>
+          </>
+        ) : (
+          <>
+            {friendshipStatus === "accepted" ? (
+              <ActionText>✓ Já são amigos</ActionText>
+            ) : friendshipStatus === "pending" ? (
+              <ActionText>Pedido de amizade pendente</ActionText>
+            ) : (
+              <ActionLink onClick={handleAddFriend}>
+                + Adicionar {firstName} como amigo
+              </ActionLink>
+            )}
+            <ActionLink onClick={handleMessage}>
+              Enviar mensagem a {firstName}
+            </ActionLink>
+          </>
+        )}
+      </div>
+
+      <input
+        ref={avatarInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleAvatarUpload}
+      />
 
       {showEditModal && (
         <ProfileEditModal
@@ -232,5 +128,64 @@ export function ProfileHeader({
         />
       )}
     </>
+  );
+}
+
+function ActionLink({
+  onClick,
+  href,
+  children,
+}: {
+  onClick?: () => void;
+  href?: string;
+  children: React.ReactNode;
+}) {
+  const style: React.CSSProperties = {
+    display: "block",
+    padding: "2px 8px",
+    fontSize: "11px",
+    fontFamily: "Arial, sans-serif",
+    color: "#3b5998",
+    textDecoration: "none",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    textAlign: "left",
+    width: "100%",
+  };
+
+  if (href) {
+    return (
+      <a href={href} style={style}>
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <button
+      onClick={onClick}
+      style={style}
+      onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
+      onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
+    >
+      {children}
+    </button>
+  );
+}
+
+function ActionText({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      style={{
+        display: "block",
+        padding: "2px 8px",
+        fontSize: "11px",
+        fontFamily: "Arial, sans-serif",
+        color: "#555",
+      }}
+    >
+      {children}
+    </span>
   );
 }
